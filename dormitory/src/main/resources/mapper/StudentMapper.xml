@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.dao.StudentMapper">
+
+    <resultMap id="BaseResultMap" type="com.demo.bean.Student">
+        <id column="student_id" property="studentId" jdbcType="INTEGER"/>
+        <result column="student_number" property="studentNumber" jdbcType="VARCHAR"/>
+        <result column="student_password" property="studentPassword" jdbcType="VARCHAR"/>
+        <result column="student_name" property="studentName" jdbcType="VARCHAR"/>
+        <result column="student_phone" property="studentPhone" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="INTEGER"/>
+        <result column="college_id" property="collegeId" jdbcType="INTEGER"/>
+        <result column="profession_id" property="professionId" jdbcType="INTEGER"/>
+        <result column="grade" property="grade" jdbcType="INTEGER"/>
+        <result column="clazz" property="clazz" jdbcType="VARCHAR"/>
+        <result column="student_dormitory_id" property="studentDormitoryId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="getStudentInfo" type="com.demo.vo.Student">
+        <id column="student_id" property="id" jdbcType="INTEGER"/>
+        <result column="student_number" property="number" jdbcType="VARCHAR"/>
+        <result column="student_password" property="password" jdbcType="VARCHAR"/>
+        <result column="student_name" property="name" jdbcType="VARCHAR"/>
+        <result column="student_phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="INTEGER" typeHandler="com.demo.handler.SexTypeHandler"/>
+        <result column="college_name" property="college" jdbcType="VARCHAR"/>
+        <result column="profession_name" property="profession" jdbcType="VARCHAR"/>
+        <result column="grade" property="grade" jdbcType="INTEGER"/>
+        <result column="clazz" property="clazz" jdbcType="VARCHAR"/>
+        <result column="dormitory_number" property="dormitory" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="findStudentById" type="com.demo.vo.Student">
+        <result column="student_number" property="number" jdbcType="VARCHAR"/>
+        <result column="student_name" property="name" jdbcType="VARCHAR"/>
+        <result column="student_phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="INTEGER" typeHandler="com.demo.handler.SexTypeHandler"/>
+        <result column="college_name" property="college" jdbcType="VARCHAR"/>
+        <result column="profession_name" property="profession" jdbcType="VARCHAR"/>
+        <result column="grade" property="grade" jdbcType="INTEGER"/>
+        <result column="clazz" property="clazz" jdbcType="VARCHAR"/>
+        <result column="dormitory_number" property="dormitory" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="findStudent" resultMap="BaseResultMap">
+        SELECT *
+        FROM tb_student
+        WHERE student_number = #{studentNumber}
+    </select>
+
+    <select id="findStudentById" resultMap="findStudentById">
+        SELECT
+            student_number,
+            student_name,
+            student_phone,
+            sex,
+            college_name,
+            profession_name,
+            grade,
+            clazz,
+            dormitory_number
+        FROM tb_student
+            INNER JOIN tb_college ON tb_student.college_id = tb_college.college_id
+            INNER JOIN tb_profession ON tb_student.profession_id = tb_profession.profession_id
+            INNER JOIN tb_dormitory ON tb_student.student_dormitory_id = tb_dormitory.dormitory_id
+        WHERE student_id = #{studentId}
+    </select>
+
+    <insert id="createStudent">
+        INSERT INTO tb_student (student_number, student_password) VALUES (#{studentNumber}, #{studentPassword})
+    </insert>
+
+    <select id="getStudentInfo" resultMap="getStudentInfo">
+        SELECT
+            student_id,
+            student_number,
+            student_password,
+            student_name,
+            student_phone,
+            sex,
+            college_name,
+            profession_name,
+            grade,
+            clazz,
+            dormitory_number
+        FROM tb_student
+            INNER JOIN tb_college ON tb_student.college_id = tb_college.college_id
+            INNER JOIN tb_profession ON tb_student.profession_id = tb_profession.profession_id
+            INNER JOIN tb_dormitory ON tb_student.student_dormitory_id = tb_dormitory.dormitory_id
+    </select>
+
+    <update id="changePassword">
+        UPDATE tb_student
+        SET student_password = #{password}
+        WHERE student_id = #{studentId}
+    </update>
+</mapper>

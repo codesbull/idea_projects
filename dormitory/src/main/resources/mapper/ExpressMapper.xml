@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.dao.ExpressMapper">
+
+    <resultMap id="getExpressInfo" type="com.demo.vo.Express">
+        <id column="express_id" property="id" jdbcType="INTEGER"/>
+        <result column="student_number" property="number" jdbcType="VARCHAR"/>
+        <result column="student_name" property="name" jdbcType="VARCHAR"/>
+        <result column="dormitory_number" property="dormitory" jdbcType="VARCHAR"/>
+        <result column="receive_date" property="receiveDate" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getExpressInfo" resultMap="getExpressInfo">
+        SELECT
+            express_id,
+            student_number,
+            student_name,
+            dormitory_number,
+            receive_date
+        FROM tb_express
+            INNER JOIN tb_student ON tb_express.student_id = tb_student.student_id
+            INNER JOIN tb_dormitory ON tb_student.student_dormitory_id = tb_dormitory.dormitory_id
+        ORDER BY express_id DESC
+    </select>
+
+    <select id="getStudentExpress" resultMap="getExpressInfo">
+        SELECT
+            express_id,
+            student_number,
+            student_name,
+            dormitory_number,
+            receive_date
+        FROM tb_express
+            INNER JOIN tb_student ON tb_express.student_id = tb_student.student_id
+            INNER JOIN tb_dormitory ON tb_student.student_dormitory_id = tb_dormitory.dormitory_id
+        WHERE tb_express.student_id = #{studentId}
+    </select>
+
+    <insert id="createExpress">
+        INSERT INTO tb_express (student_id, receive_date) VALUES (#{studentId}, #{receiveDate})
+    </insert>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.dao.LateBackMapper">
+
+    <resultMap id="getLateBackInfo" type="com.demo.vo.LateBack">
+        <id column="late_back_id" property="id" jdbcType="INTEGER"/>
+        <result column="student_name" property="name" jdbcType="VARCHAR"/>
+        <result column="student_number" property="number" jdbcType="VARCHAR"/>
+        <result column="dormitory_number" property="dormitory" jdbcType="VARCHAR"/>
+        <result column="late_back_time" property="lateBackTime" jdbcType="VARCHAR"/>
+        <result column="late_back_reason" property="reason" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getLateBackInfo" resultMap="getLateBackInfo">
+        SELECT
+            late_back_id,
+            student_name,
+            student_number,
+            dormitory_number,
+            late_back_time,
+            late_back_reason
+        FROM tb_late_back
+            INNER JOIN tb_student ON tb_late_back.late_back_student_id = tb_student.student_id
+            INNER JOIN tb_dormitory ON tb_student.student_dormitory_id = tb_dormitory.dormitory_id
+        ORDER BY late_back_id DESC
+    </select>
+
+    <insert id="createLateBack">
+        INSERT INTO tb_late_back (late_back_time, late_back_reason, late_back_student_id) VALUES
+            (#{lateBackTime}, #{reason}, #{studentId})
+    </insert>
+</mapper>

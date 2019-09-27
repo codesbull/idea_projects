@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>注册宿舍管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="icon" href="assets/images/favicon.png">
+    <link rel="stylesheet" href="assets/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="assets/stylesheets/register.css" media="all"/>
+</head>
+<body>
+
+<div class="login">
+    <h1>宿舍管理系统注册</h1>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <input class="layui-input" name="studentNumber" placeholder="学号" lay-verify="required" type="text"
+                   autocomplete="off">
+        </div>
+
+        <div class="layui-form-item">
+            <input class="layui-input" name="studentPassword" placeholder="密码" lay-verify="required" type="password"
+                   autocomplete="off">
+        </div>
+
+        <button class="layui-btn layui-btn-normal login_btn" lay-submit="register" lay-filter="register">注册</button>
+
+        <div class="register">
+            已有账号？
+            <a href="login.html">立即登录</a>
+        </div>
+    </form>
+</div>
+
+<script src="assets/layui/layui.js" charset="utf-8"></script>
+<script src="assets/javascripts/ajax.js"></script>
+<script src="assets/javascripts/constant.js"></script>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+
+        // 监听提交
+        form.on('submit(register)', function (data) {
+            $.postJSON(STUDENT_REGISTER_URL, JSON.stringify(data.field), function (msg) {
+                if (msg.code === SUCCESS) {
+                    location.href = '/login.html';
+                } else {
+                    layer.msg(msg.msg);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

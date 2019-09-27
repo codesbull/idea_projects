@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.dao.RepairMapper">
+
+    <resultMap id="getRepairInfo" type="com.demo.vo.Repair">
+        <id column="repair_id" property="id" jdbcType="INTEGER"/>
+        <result column="repair_project" property="project" jdbcType="VARCHAR"/>
+        <result column="student_name" property="name" jdbcType="VARCHAR"/>
+        <result column="dormitory_number" property="dormitory" jdbcType="VARCHAR"/>
+        <result column="repair_date" property="repairDate" jdbcType="VARCHAR"/>
+        <result column="finish_date" property="finishDate" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getRepairInfo" resultMap="getRepairInfo">
+        SELECT
+            repair_id,
+            repair_project,
+            student_name,
+            dormitory_number,
+            repair_date,
+            finish_date
+        FROM tb_repair
+            INNER JOIN tb_dormitory ON tb_repair.dormitory_id = tb_dormitory.dormitory_id
+            INNER JOIN tb_student ON tb_repair.student_id = tb_student.student_id
+        ORDER BY repair_id DESC
+    </select>
+
+    <select id="getStudentRepair" resultMap="getRepairInfo">
+        SELECT
+            repair_id,
+            repair_project,
+            dormitory_number,
+            repair_date,
+            finish_date
+        FROM tb_repair
+            INNER JOIN tb_dormitory ON tb_repair.dormitory_id = tb_dormitory.dormitory_id
+            INNER JOIN tb_student ON tb_repair.student_id = tb_student.student_id
+            WHERE tb_repair.student_id=#{studentId}
+        ORDER BY repair_id DESC
+    </select>
+
+    <insert id="createRepair">
+        INSERT INTO tb_repair (repair_project, repair_date, dormitory_id,student_id)
+        VALUES (#{project}, #{repairDate}, #{dormitoryId},#{studentId})
+    </insert>
+
+    <update id="update">
+        UPDATE tb_repair
+        SET repair_project = #{project}
+        WHERE repair_id = #{id}
+    </update>
+</mapper>

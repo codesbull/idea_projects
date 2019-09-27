@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.dao.DormitoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.demo.bean.Dormitory">
+        <id column="dormitory_id" property="dormitoryId" jdbcType="INTEGER"/>
+        <result column="dormitory_number" property="dormitoryNumber" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="findDormitory" resultMap="BaseResultMap">
+        SELECT
+            dormitory_id,
+            dormitory_number
+        FROM tb_dormitory
+        WHERE dormitory_number = #{dormitoryNumber}
+    </select>
+</mapper>

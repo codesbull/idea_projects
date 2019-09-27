@@ -1,0 +1,42 @@
+body {
+    overflow: hidden;
+}
+
+.login {
+    height: 230px;
+    width: 260px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -150px 0 0 -150px;
+    z-index: 99;
+}
+
+.login h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.form_code {
+    position: relative;
+}
+
+.login_btn {
+    width: 100%;
+}
+
+.register{
+    margin-top: 5px;
+    padding-right: 5px;
+    text-align: right;
+}
+
+.register a{
+    color: #2f4eff;
+    font-size: 15px;
+}

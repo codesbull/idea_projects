@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.demo.dao.LeaveSchoolMapper">
+
+    <resultMap id="getLeaveSchoolInfo" type="com.demo.vo.LeaveSchool">
+        <id column="leave_school_id" property="id" jdbcType="INTEGER"/>
+        <result column="student_name" property="name" jdbcType="VARCHAR"/>
+        <result column="dormitory_number" property="dormitory" jdbcType="VARCHAR"/>
+        <result column="leave_school_time" property="leaveSchoolTime" jdbcType="VARCHAR"/>
+        <result column="leave_school_reason" property="reason" jdbcType="VARCHAR"/>
+        <result column="valuables" property="valuables" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getLeaveSchoolInfo" resultMap="getLeaveSchoolInfo">
+        SELECT
+            leave_school_id,
+            student_name,
+            dormitory_number,
+            leave_school_time,
+            leave_school_reason,
+            valuables
+        FROM tb_leave_school
+            INNER JOIN tb_student ON tb_leave_school.leave_student_id = tb_student.student_id
+            INNER JOIN tb_dormitory ON tb_student.student_dormitory_id = tb_dormitory.dormitory_id
+        ORDER BY leave_school_id
+    </select>
+
+    <select id="getStudentLeaveSchool" resultMap="getLeaveSchoolInfo">
+        SELECT
+            leave_school_id,
+            student_name,
+            dormitory_number,
+            leave_school_time,
+            leave_school_reason,
+            valuables
+        FROM tb_leave_school
+            INNER JOIN tb_student ON tb_leave_school.leave_student_id = tb_student.student_id
+            INNER JOIN tb_dormitory ON tb_student.student_dormitory_id = tb_dormitory.dormitory_id
+        WHERE tb_student.student_id = #{studentId}
+        ORDER BY leave_school_id
+    </select>
+
+    <insert id="createLeaveSchool">
+        INSERT INTO tb_leave_school (leave_school_time, leave_student_id, leave_school_reason, valuables)
+        VALUES (#{leaveSchoolTime}, #{studentId}, #{reason}, #{valuables})
+    </insert>
+
+    <delete id="deleteLeaveSchool">
+        DELETE FROM tb_leave_school
+        WHERE leave_school_id = #{leaveSchoolId}
+    </delete>
+</mapper>
