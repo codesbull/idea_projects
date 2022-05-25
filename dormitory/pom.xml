@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <spring.version>4.3.4.RELEASE</spring.version>
+        <spring.version>5.2.22.RELEASE</spring.version>
         <mybatis.version>3.4.2</mybatis.version>
         <log4j.version>2.7</log4j.version>
         <junit.version>4.12</junit.version>
